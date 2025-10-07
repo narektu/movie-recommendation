@@ -1,6 +1,6 @@
 from typing import AsyncGenerator
-from app.database import SessionLocal
+from app.database import AsyncSessionLocal
 
 async def get_db() -> AsyncGenerator:
-   async with SessionLocal() as session:
+   async with AsyncSessionLocal() as session:
       yield session
