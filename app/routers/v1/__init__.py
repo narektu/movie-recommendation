@@ -4,8 +4,8 @@ from .users import router as users_router
 # from .movies import router as movies_router
 # from .ratings import router as ratings_router
 
-router = APIRouter()
+api_router = APIRouter()
 
-router.include_router(users_router, prefix="/users", tags=["users"])
-# router.include_router(movies_router, prefix="/movies", tags=["movies"])
-# router.include_router(ratings_router, prefix="/ratings", tags=["ratings"])
+api_router.include_router(users_router, prefix="/users", tags=["users"])
+# api_router.include_router(movies_router, prefix="/movies", tags=["movies"])
+# api_router.include_router(ratings_router, prefix="/ratings", tags=["ratings"])
