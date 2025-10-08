@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.models.rating import Rating
-from app.schemas.rating import RatingCreate
+from app.schemas.rating import RatingCreate, RatingOut
 
 class RatingRepository:
    
@@ -30,3 +30,9 @@ class RatingRepository:
       await db.commit()
       await db.refresh(new_rating)
       return new_rating
+
+   @staticmethod
+   async def get_all_ratings(db: AsyncSession) -> List[RatingOut]: 
+      result = await db.execute(select(Rating))
+      all_ratings = result.scalars().all()
+      return [RatingOut.from_orm(rating) for rating in all_ratings]

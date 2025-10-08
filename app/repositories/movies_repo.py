@@ -17,6 +17,13 @@ class MovieRepository:
       return result.scalars().all()
    
    @staticmethod
+   async def get_movies_by_ids(db: AsyncSession, movie_ids: List[int]) -> List[Movie]:
+      if not movie_ids:
+         return []
+      result = await db.execute(select(Movie).where(Movie.id.in_(movie_ids)))
+      return result.scalars().all()
+   
+   @staticmethod
    async def create_movie(db: AsyncSession, db_movie: Movie, movie_update: MovieUpdate) -> Movie:
       new_movie = Movie(**movie_in.dict())
       db.add(new_movie)
