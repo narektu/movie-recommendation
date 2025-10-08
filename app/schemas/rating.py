@@ -19,6 +19,8 @@ class RatingOut(RatingBase):
    class Config:
       orm_mode = True
 
+class RatingUpdate(RatingBase):
+   score: float
 
 class RatingMovieOut(RatingOut):
    movie: MovieOut
