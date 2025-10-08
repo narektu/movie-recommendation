@@ -17,7 +17,7 @@ class Movie(Base):
    created_at = Column(DateTime(timezone=True), server_default=func.now())
    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-   roatings = relationship("Rating", back_populates="movie")
+   ratings = relationship("Rating", back_populates="movie")
 
    def __repr__(self):
-      return f"<Movie(id={self.id}, title='{self.title}')"
+      return f"<Movie(id={self.id}, title='{self.title}')>"
