@@ -32,3 +32,31 @@ def collaborative_filtering_recommender(target_user_id: int, all_ratings: List[R
    
    return list(recommendations)
 
+def popularity_recommender(all_ratings: List[RatingOut], min_ratings: int = 5, top_n: int = 10) -> List[int]:
+   if not all_ratings:
+      return[]
+   
+   df = pd.DataFrame([r.dict() for n in all_ratings])
+
+   movie_stats = df.groupby('movie_db')['score'].agg(['count', 'mean']).reset_index()
+   movie_stats = movie_stats.rename(columns={'count': 'num_ratings', 'mean': 'avg_ratings'})
+
+   global_avg_stats = df['score'].mean()
+
+   qualified_movies = movie_stats[movie_stats['num_ratings'] >= min_ratings]
+
+   if qualified_movies.empty:
+      return[]
+   
+   # Calculate the weighted score for each qualified movie
+   v = qualified_movies['num_ratings']
+   m = min_ratings
+   R = qualified_movies['avg_rating']
+   C = global_avg_rating
+   
+   qualified_movies['weighted_score'] = (v / (v + m)) * R + (m / (v + m)) * C
+   
+   top_movies = qualified_movies.sort_values('weighted_score', ascending=False).head(top_n)
+   return top_movies['movie_id'].tolist()
+
+
