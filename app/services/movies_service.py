@@ -3,7 +3,7 @@ from sqlalchemy import select, update, delete
 from app.models.movie import Movie
 from app.schemas.movie import MovieCreate, MovieUpdate
 
-class MoviesRepository:
+class MoviesService:
     @staticmethod
     async def get_movies(db: AsyncSession, skip: int = 0, limit: int = 10):
         query = select(Movie).offset(skip).limit(limit)

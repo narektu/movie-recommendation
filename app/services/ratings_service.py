@@ -3,7 +3,7 @@ from sqlalchemy import select, func
 from app.models.rating import Rating
 from app.schemas.rating import RatingCreate
 
-class RatingsRepository:
+class RatingsService:
     @staticmethod
     async def create_or_update_rating(db: AsyncSession, rating_data: RatingCreate, user_id: int):
         query = select(Rating).where(
