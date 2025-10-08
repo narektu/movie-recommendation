@@ -3,6 +3,7 @@ from sqlalchemy.future import select
 from sqlalchemy import func
 from app.models.movie import Movie
 from app.schemas.movie import MovieCreate, MovieUpdate
+from typing import List
 
 class MovieRepository:
 

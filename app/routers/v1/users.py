@@ -21,11 +21,11 @@ async def list_users(db: DB_Session):
    return await UserService.list_users(db)
 
 @router.post("/login", response_model=security.Token)
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: DB_Session = Depends()):
+async def login(db: DB_Session, form_data: OAuth2PasswordRequestForm = Depends()):
    user = await UsersRepository.get_user_by_email(db, form_data.username)
    if not user or not security.verify_password(form_data.password, user.hashed_password):
       raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password", headers={"WWW-Authenticate": "Bearer"})
-   access_token = security.create_access_token(data={"email": user.email})
+   access_token = security.create_access_token(data={"sub": user.email})
    return {"access_token": access_token, "token_type": "bearer"}
 
 @router.get("/me", response_model=UserOut)

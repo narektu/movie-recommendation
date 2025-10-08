@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.models.rating import Rating
 from app.schemas.rating import RatingCreate, RatingOut
+from typing import List
 
 class RatingRepository:
    
