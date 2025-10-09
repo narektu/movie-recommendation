@@ -4,6 +4,7 @@ from app.repositories.ratings_repo import RatingRepository
 from app.repositories.movies_repo import MovieRepository
 from app.ml.recommenders import collaborative_filtering_recommender, popularity_recommender
 from app.schemas.movie import MovieOut
+from app.config import settings
 
 class RecommendationsService:
 
@@ -17,8 +18,8 @@ class RecommendationsService:
       if not recommended_movie_ids:
          return []
       
-      recommended_movie = await MovieRepository.get_movie_by_id(db, recommended_movie_ids)
-      return recommended_movie
+      recommended_movies = await MovieRepository.get_movies_by_ids(db, recommended_movie_ids)
+      return recommended_movies
    
    @staticmethod
    async def get_popularity_recs(db: DB_Session) -> List[MovieOut]:
@@ -26,11 +27,14 @@ class RecommendationsService:
       if not all_ratings:
          return []
       
-      recommended_movie_ids = popularity_recommender(all_ratings=all_ratings)
+      recommended_movie_ids = popularity_recommender(
+         all_ratings=all_ratings,
+         min_ratings=settings.popularity_min_ratings,
+         top_n=settings.popularity_top_n
+      )
       if not recommended_movie_ids:
          return []
       
-      recommended_movie = await MovieRepository.get_movie_by_id(db, recommended_movie_ids)
-
-      return recommended_movie
+      recommended_movies = await MovieRepository.get_movies_by_ids(db, recommended_movie_ids)
+      return recommended_movies
 

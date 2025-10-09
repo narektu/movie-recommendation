@@ -10,6 +10,9 @@ class Settings(BaseSettings):
    algorithm: str = "HS256"
    access_token_expire_minutes: int = 60
 
+   popularity_min_ratings: int = 5
+   popularity_top_n: int = 10
+
    class Config:
       env_file = ".env"
 

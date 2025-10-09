@@ -32,16 +32,16 @@ def collaborative_filtering_recommender(target_user_id: int, all_ratings: List[R
    
    return list(recommendations)
 
-def popularity_recommender(all_ratings: List[RatingOut], min_ratings: int = 5, top_n: int = 10) -> List[int]:
+def popularity_recommender(all_ratings: List[RatingOut], min_ratings: int, top_n: int) -> List[int]:
    if not all_ratings:
       return[]
    
-   df = pd.DataFrame([r.dict() for n in all_ratings])
+   df = pd.DataFrame([r.dict() for r in all_ratings])
 
-   movie_stats = df.groupby('movie_db')['score'].agg(['count', 'mean']).reset_index()
-   movie_stats = movie_stats.rename(columns={'count': 'num_ratings', 'mean': 'avg_ratings'})
+   movie_stats = df.groupby('movie_id')['score'].agg(['count', 'mean']).reset_index()
+   movie_stats = movie_stats.rename(columns={'count': 'num_ratings', 'mean': 'avg_rating'})
 
-   global_avg_stats = df['score'].mean()
+   global_avg_rating = df['score'].mean()
 
    qualified_movies = movie_stats[movie_stats['num_ratings'] >= min_ratings]
 
