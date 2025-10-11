@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, func, Float
 from sqlalchemy.orm import relationship
 from app.database import Base
+from pgvector.sqlalchemy import Vector
 
 
 class Movie(Base):
@@ -10,6 +11,7 @@ class Movie(Base):
    title = Column(String, index=True, nullable=False)
    release_year = Column(Integer, index=True, nullable=False)
    description = Column(Text, nullable=True) 
+   embedding = Column(Vector(384)) # 384 - vector dimension
    genre = Column(String, nullable=True)
 
    average_rating = Column(Float, default=0.0)
